@@ -113,7 +113,7 @@
     <Compile Include="CSharp_Button_Click.cs" />
     <Compile Include="CSharp_TimepointStreaming_Focus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RenderCSV.cs" />
+    <Compile Include="RenderShapes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
