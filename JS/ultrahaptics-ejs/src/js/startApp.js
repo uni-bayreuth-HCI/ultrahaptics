@@ -3,7 +3,7 @@ import pathsToCoords from './pathsToCoords';
 import axios from 'axios';
 var data= {
     scale:1,
-    numPoints:2000,
+    numPoints:1000,
     translateX:1,
     translateY:1
 }
