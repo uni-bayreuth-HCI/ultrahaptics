@@ -25,12 +25,17 @@
     <link rel="stylesheet" href="https://bootswatch.com/4/cosmo/bootstrap.min.css">
     <script type="text/javascript" src="main.js"></script>
     <script src="https://js.leapmotion.com/leap-0.6.4.min.js"></script>      
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="main.js">
+    <link typr="stylesheet" src='main.css'> </link>
+    </script>  
+
   </head>
   
   <body onload="main()">
     
     <div class="navbar "></div>
-    <div class="container col-md-6 col-md-offset-4">
+    <div class="container col-md-8 col-md-offset-4">
     <form id="form-fileupload" class="form-signin text-center">
       <h1 class="h3 mb-3 font-weight-normal">Upload File to render on Ultrahaptics</h1>
       
@@ -38,7 +43,15 @@
       <input type="file" accept=".svg" id="file_upload" name="file_upload" class="form-control" placeholder="Upload File">
       <div ref:svgHolder id='svg-holder'></div>
     </form>
-    <button class="btn btn-lg btn-primary btn-block" id="render-button">Render</button>
+    <button class="btn btn-lg btn-primary btn-block" id="render-button-svg">Render SVG</button>
+    <div  ref:canvasHolder class='image-preview'>
+      <canvas ref:canvas id='shape-canvas' width='500' height='500' style="border: 2px solid #000000;
+      background-color: gray;
+      width: 500px;
+      height: 500px;"></canvas>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" id="clear-button-canvas">Clear Canvas</button>
+    <button class="btn btn-lg btn-primary btn-block" id="render-button-canvas">Render Canvas</button>
   </div>
 
   <table>

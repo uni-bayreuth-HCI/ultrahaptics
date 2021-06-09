@@ -5,6 +5,7 @@ function renderCoordinates (coordinates) {
     let scalFact = getScalingFactor(coordinates)
     let scaledCoordinates = coordinates.map(coordinate=> coordinate.map(xy=> (xy/scalFact)- 0.02))
     const csv = new ObjectsToCsv(scaledCoordinates);
+    //csv.toDisk("list.csv")
     csv.toDisk("../../csharp/UltrahapticsShapes/bin/x64/Debug/list.csv")
     try {
         exec("cd ../../csharp/UltrahapticsShapes/bin/x64/Debug/ & UltrahapticsShapes.exe SVG",

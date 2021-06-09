@@ -2,6 +2,8 @@ import pathologize from './pathologize';
 import pathsToCoords from './pathsToCoords';
 import axios from 'axios';
 import leap from './leap'
+import canvas_script from './canvas_script';
+
 var data= {
     scale:1,
     numPoints:1000,
@@ -30,21 +32,32 @@ export default function startApp () {
 
     }
 
+    var handleRenderCanvasButtonCLicked = function() {
+        handleRenderButtonCLicked(window.canvas_coordinates)
+    }
+
+    var handleRenderSVGButtonCLicked = function() {
+        handleRenderButtonCLicked(window.coordinates)
+    }
+
     var handleRenderButtonCLicked = function() {
-        console.log(window.coordinates)
+        alert
         axios({
             method: 'post',
             url: '/render',
             data: {
-              coordinates: window.coordinates,
+              coordinates: window.canvas_coordinates,
             }
           }).then(function (response) {
-            
+              
           });
-          
     }
+    canvas_script();
+    leap();
 
+    
     document.querySelector('#file_upload').addEventListener("change", handleFileUpload)
     document.getElementById('render-button').addEventListener('click', handleRenderButtonCLicked)
-    leap();
+    document.getElementById('render-button-svg').addEventListener('click', handleRenderSVGButtonCLicked)
+    document.getElementById('render-button-canvas').addEventListener('click', handleRenderCanvasButtonCLicked)
 }
