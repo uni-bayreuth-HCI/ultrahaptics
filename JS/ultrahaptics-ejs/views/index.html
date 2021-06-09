@@ -2,12 +2,33 @@
 <html>
   <head>
     <title><%= title %></title>
+    <style>
+      th, td {
+        min-width: 300px;
+        text-align: left;
+        vertical-align: top	
+      }
+      div {
+        background-color: red;
+        border-radius: 50px;
+        position: absolute;
+      }
+      div#palm {
+        height: 100px;
+        width: 100px;  
+      }
+      div.finger {
+        height: 20px;
+        width: 20px;  
+      }
+      </style>
     <link rel="stylesheet" href="https://bootswatch.com/4/cosmo/bootstrap.min.css">
-    <script type="text/javascript" src="main.js">
-    </script>  
+    <script type="text/javascript" src="main.js"></script>
+    <script src="https://js.leapmotion.com/leap-0.6.4.min.js"></script>      
   </head>
   
   <body onload="main()">
+    
     <div class="navbar "></div>
     <div class="container col-md-6 col-md-offset-4">
     <form id="form-fileupload" class="form-signin text-center">
@@ -19,6 +40,22 @@
     </form>
     <button class="btn btn-lg btn-primary btn-block" id="render-button">Render</button>
   </div>
-  
+
+  <table>
+    <tr>
+      <th>Frame Data</th><th>Hand Data</th><th>Finger Data</th>
+    </tr>
+    <tr>
+      <td id="frameData">Frame Data</td><td id="handData">Hand Data</td><td id="fingerData">Finger Data</td>
+    </tr>
+  </table>
+
+  <div id="palm"></div>
+  <div class="finger"></div>
+  <div class="finger"></div>
+  <div class="finger"></div>
+  <div class="finger"></div>
+  <div class="finger"></div>
+
   </body>
 </html>

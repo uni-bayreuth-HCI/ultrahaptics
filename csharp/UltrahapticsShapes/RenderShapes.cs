@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Ultrahaptics;
+using System.Net.WebSockets;
 
 namespace UltrahapticsShapes
 {
@@ -10,7 +11,7 @@ namespace UltrahapticsShapes
     {
         public static void Main(string[] args)
         {
-            string file_type = "CSV";
+            string file_type = args[0];
             string file_name = Path.Combine(Environment.CurrentDirectory, "list.csv");
             AmplitudeModulationEmitter emitter = new AmplitudeModulationEmitter();
 
@@ -19,7 +20,7 @@ namespace UltrahapticsShapes
 
             if(file_type == "CSV")
             {
-                for (; ; )
+                for (; ;)
                 {
                     using (TextFieldParser parser = new TextFieldParser(file_name))
                     {
@@ -57,7 +58,7 @@ namespace UltrahapticsShapes
             }
             else if(file_type == "SVG")
             {
-                for (; ; )
+                for (; ;)
                 {
                     using (TextFieldParser parser = new TextFieldParser(file_name))
                     {

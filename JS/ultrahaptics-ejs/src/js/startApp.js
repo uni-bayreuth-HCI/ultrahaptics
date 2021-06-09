@@ -1,6 +1,7 @@
 import pathologize from './pathologize';
 import pathsToCoords from './pathsToCoords';
 import axios from 'axios';
+import leap from './leap'
 var data= {
     scale:1,
     numPoints:1000,
@@ -45,4 +46,5 @@ export default function startApp () {
 
     document.querySelector('#file_upload').addEventListener("change", handleFileUpload)
     document.getElementById('render-button').addEventListener('click', handleRenderButtonCLicked)
+    leap();
 }
