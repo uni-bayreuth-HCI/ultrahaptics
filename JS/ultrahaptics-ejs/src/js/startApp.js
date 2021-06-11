@@ -40,13 +40,13 @@ export default function startApp () {
         handleRenderButtonCLicked(window.coordinates)
     }
 
-    var handleRenderButtonCLicked = function() {
-        alert
+    var handleRenderButtonCLicked = function(coordinates) {
+        debugger;
         axios({
             method: 'post',
             url: '/render',
             data: {
-              coordinates: window.canvas_coordinates,
+              coordinates: coordinates,
             }
           }).then(function (response) {
               
@@ -57,7 +57,6 @@ export default function startApp () {
 
     
     document.querySelector('#file_upload').addEventListener("change", handleFileUpload)
-    document.getElementById('render-button').addEventListener('click', handleRenderButtonCLicked)
     document.getElementById('render-button-svg').addEventListener('click', handleRenderSVGButtonCLicked)
     document.getElementById('render-button-canvas').addEventListener('click', handleRenderCanvasButtonCLicked)
 }

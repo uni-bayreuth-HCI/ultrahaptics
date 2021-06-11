@@ -2,6 +2,7 @@ const ObjectsToCsv = require('objects-to-csv')
 const { exec } = require("child_process");
 
 function renderCoordinates (coordinates) {
+    console.log(coordinates)
     let scalFact = getScalingFactor(coordinates)
     let scaledCoordinates = coordinates.map(coordinate=> coordinate.map(xy=> (xy/scalFact)- 0.02))
     const csv = new ObjectsToCsv(scaledCoordinates);
