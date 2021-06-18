@@ -66,7 +66,7 @@ std::map<int, std::vector<string>> readCSV()
     return csv_contents;
 }
 
-int main(int argc, char* argv[])
+int notmain(int argc, char* argv[])
 {
     // Create an emitter.
     Ultrahaptics::AmplitudeModulation::Emitter emitter;

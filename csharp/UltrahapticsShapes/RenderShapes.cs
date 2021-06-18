@@ -9,7 +9,7 @@ namespace UltrahapticsShapes
 {
     class RenderShapes
     {
-        public static void Main(string[] args)
+        public static void NotMain(string[] args)
         {
             string file_type = args[0];
             string file_name = Path.Combine(Environment.CurrentDirectory, "list.csv");
