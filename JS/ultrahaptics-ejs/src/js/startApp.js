@@ -1,8 +1,9 @@
 import pathologize from './pathologize';
 import pathsToCoords from './pathsToCoords';
 import axios from 'axios';
-import leap from './leap'
+import leap from './leap';
 import canvas_script from './canvas_script';
+import cs_websocket from './cs_websocket'
 
 var data= {
     scale:1,
@@ -12,6 +13,7 @@ var data= {
 }
 
 export default function startApp () {
+    window.ocs_websocket = cs_websocket();
     window.coordinates;
     var handleFileUpload = function (e) {
         let file = this.files[0];
@@ -41,7 +43,7 @@ export default function startApp () {
     }
 
     var handleRenderButtonCLicked = function(coordinates) {
-        debugger;
+        
         axios({
             method: 'post',
             url: '/render',
@@ -54,7 +56,6 @@ export default function startApp () {
     }
     canvas_script();
     leap();
-
     
     document.querySelector('#file_upload').addEventListener("change", handleFileUpload)
     document.getElementById('render-button-svg').addEventListener('click', handleRenderSVGButtonCLicked)

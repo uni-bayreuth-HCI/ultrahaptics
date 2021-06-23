@@ -1,26 +1,24 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using Ultrahaptics;
-using System.Net.WebSockets;
+using Microsoft.VisualBasic.FileIO;
+using System.IO;
 
 namespace UltrahapticsShapes
 {
-    class RenderShapes
+    public class AM
     {
-        public static void NotMain(string[] args)
+        public static void AmplitudeModulationRandomShapesFromPoints(string file_type)
         {
-            string file_type = args[0];
             string file_name = Path.Combine(Environment.CurrentDirectory, "list.csv");
             AmplitudeModulationEmitter emitter = new AmplitudeModulationEmitter();
 
             float intensity = 1.0f;
             float frequency = 200.0f;
 
-            if(file_type == "CSV")
+            if (file_type == "CSV")
             {
-                for (; ;)
+                for (; ; )
                 {
                     using (TextFieldParser parser = new TextFieldParser(file_name))
                     {
@@ -56,9 +54,9 @@ namespace UltrahapticsShapes
                 }
 
             }
-            else if(file_type == "SVG")
+            else if (file_type == "SVG")
             {
-                for (; ;)
+                for (; ; )
                 {
                     using (TextFieldParser parser = new TextFieldParser(file_name))
                     {
@@ -88,7 +86,8 @@ namespace UltrahapticsShapes
                         }
                     }
                 }
-            }            
+            }
+
         }
     }
 }
