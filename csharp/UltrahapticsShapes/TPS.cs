@@ -13,8 +13,12 @@ namespace UltrahapticsShapes
 
         static Vector3[] _positions;
         static float[] _intensities;
-
-        public static void TpsRandomShapsFromPoints()
+        private static bool Stop = false;
+        public static void Stop_Emitter()
+        {
+            Stop = true;
+        }
+        public static void Render()
         {
             // Create a timepoint streaming emitter
             // Note that this automatically attempts to connect to the device, if present
@@ -65,6 +69,11 @@ namespace UltrahapticsShapes
 
         static void Callback(TimePointStreamingEmitter emitter, OutputInterval interval, TimePoint deadline, object user_obj)
         {
+            if (Stop) {
+                _emitter.stop();
+                _emitter.Dispose();
+                _emitter = null;
+            }
             // For each time point in this interval...
             foreach (var tpoint in interval)
             {
@@ -81,5 +90,6 @@ namespace UltrahapticsShapes
                 _current = (_current + 1) % (uint)_positions.Length;
             }
         }
+
     }
 }

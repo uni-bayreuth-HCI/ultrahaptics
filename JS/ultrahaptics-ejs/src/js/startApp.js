@@ -42,17 +42,56 @@ export default function startApp () {
         handleRenderButtonCLicked(window.coordinates)
     }
 
+    var handleStopClicked = function() {
+        window.ocs_websocket.send_message({"type":"stop"});
+    }
+
     var handleRenderButtonCLicked = function(coordinates) {
+        let render_type = $('#render-type option:selected').val()
+        if (render_type == 'select') {
+            alert("Please select type of rendering!")
+        } else {
+            axios({
+                method: 'post',
+                url: '/render',
+                data: {
+                  coordinates: coordinates,
+                }
+              }).then(function (response) {
+                  console.log(response)
+                  if (response.data == 'Success') {
+                    let render_type = $('#render-type option:selected').val()
+                    window.ocs_websocket.send_message({'type': render_type})
+                  }
+                  
+              });
+        }
+
         
-        axios({
-            method: 'post',
-            url: '/render',
-            data: {
-              coordinates: coordinates,
-            }
-          }).then(function (response) {
-              
-          });
+    }
+    var handleTabChanged = function(event) {
+        
+        if (this.innerText =="File") {
+            $("#file-form-tab").show();
+            $("#canvas-tab").hide();
+            $("#leap-live").hide();
+            handleStopClicked();
+            // $("#file-form-tab").hide()
+        } else if (this.innerText =="Canvas") {
+            $("#file-form-tab").hide();
+            $("#canvas-tab").show();
+            $("#leap-live").hide();
+            handleStopClicked();
+            // $("#file-form-tab").hide()
+        } else if (this.innerText =="Leap live") {
+            $("#file-form-tab").hide();
+            $("#canvas-tab").hide();
+            $("#leap-live").show();
+            handleStopClicked();
+            // $("#file-form-tab").hide()
+        }
+
+
     }
     canvas_script();
     leap();
@@ -60,4 +99,9 @@ export default function startApp () {
     document.querySelector('#file_upload').addEventListener("change", handleFileUpload)
     document.getElementById('render-button-svg').addEventListener('click', handleRenderSVGButtonCLicked)
     document.getElementById('render-button-canvas').addEventListener('click', handleRenderCanvasButtonCLicked)
+    document.getElementById('stop').addEventListener('click', handleStopClicked);
+    document.querySelectorAll('#navigationTab').forEach(item=> {
+        item.addEventListener("click", handleTabChanged);
+    })
+    
 }

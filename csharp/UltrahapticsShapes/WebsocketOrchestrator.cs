@@ -2,10 +2,12 @@
 using System.Net.Sockets;
 using System.Net;
 using System.Security.Cryptography;
-using System.Threading;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using WebSocketSharp;
 using WebSocketSharp.Server;
+using Newtonsoft.Json;
 
 namespace UltrahapticsShapes
 {
@@ -14,11 +16,34 @@ namespace UltrahapticsShapes
     {
         protected override void OnMessage(MessageEventArgs e)
         {
-            var msg = e.Data == "BALUS"
-                        ? "I've been balused already..."
-                        : "I'm not available now.";
+            Console.WriteLine(e.Data);
+            if (e.Data == "BALUS") {
+                Send("You are connected to ultrahaptics");
+                return;
+            }
+            
+            Dictionary<string,string> Json_message = JsonConvert.DeserializeObject<Dictionary<string, string>>(e.Data);
 
-            Send(msg);
+            if (Json_message["type"] == "TPS") {
+                Task.Factory.StartNew(() => TPS.Render());
+                Send("Check Ultrahaptics device!");
+            }
+
+            if (Json_message["type"] == "AM")
+            {
+                Task.Factory.StartNew(() => AM.Render());
+                Send("Check Ultrahaptics device!");
+            }
+
+            if (Json_message["type"] == "stop") {
+                AM.Stop_Emitter();
+                TPS.Stop_Emitter();
+            }
+
+
+            if (Json_message["type"] == "leap-data") { 
+
+            }
         }
     }
 

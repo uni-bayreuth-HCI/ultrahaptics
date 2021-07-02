@@ -8,20 +8,34 @@
         text-align: left;
         vertical-align: top	
       }
-      div {
-        background-color: red;
-        border-radius: 50px;
-      }
+      
       div#palm {
         height: 100px;
         width: 100px;  
+        background-color: red;
+        border-radius: 50px;
       }
       div.finger {
         height: 20px;
         width: 20px;  
+        background-color: red;
+        border-radius: 50px;
+      }
+      #stop {
+        position: absolute;
+        top:0;
+        right:0;
+      }
+      #render-button-svg,
+      #clear-button-canvas,
+      #render-button-canvas{
+        display: inline-block;
+        vertical-align: top;
       }
       </style>
-    <link rel="stylesheet" href="https://bootswatch.com/4/cosmo/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="main.js"></script>
     <script src="https://js.leapmotion.com/leap-0.6.4.min.js"></script>      
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -32,45 +46,78 @@
   </head>
   
   <body onload="main()">
-    
-    <div class="navbar "></div>
-    <div class="container col-md-8 col-md-offset-4">
-    <form id="form-fileupload" class="form-signin text-center">
-      <h1 class="h3 mb-3 font-weight-normal">Upload File to render on Ultrahaptics</h1>
+      <div id="bodycontainer" style="width:75%;margin:auto;">
+      <div class="navbar ">
+        <select id="render-type" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" style="margin-left:20px;">
+          <option value="select" selected>----select----</option>
+          <option value="AM">Amplitude Modulation</option>
+          <option value="TPS">Time Pont Streaming</option>
+          <!-- <option value="CI">Custom Intelligent</option> -->
+        </select>
+        <button type="button" id="stop" class="btn btn-danger" style="margin-right:20px;">Stop Ultrahaptics</button>
+      </div>
+      <ul id="navigationTabs" class="nav nav-tabs">
+        
+        <li id="navigationTab"><a href="#">File</a></li>
+        <li id="navigationTab"><a href="#">Canvas</a></li>
+        <li id="navigationTab"><a href="#">Leap live</a></li>
+        <li id="navigationTab"><a href="#">Leap canvas</a></li>
+      </ul>
+
+      <div class="container col-md-10 col-md-offset-1">
+        <div id="file-form-tab">
+          <form id="form-fileupload" class="form-signin text-center">
+            <h1 class="h3 mb-3 font-weight-normal">Upload File</h1>
+            
+            <label id="tempid" for="name" class="sr-only"></label>
+            <input type="file" accept=".svg,.csv" id="file_upload" name="file_upload" class="form-control" placeholder="Upload File">
+            <div ref:svgHolder id='svg-holder'></div>
+            <button class="btn btn-lg btn-primary btn-block" id="render-button-svg" Style="width: 150px; margin-top: 10px;">Render</button>
+          </form>
+        </div>
       
-      <label id="tempid" for="name" class="sr-only"></label>
-      <input type="file" accept=".svg" id="file_upload" name="file_upload" class="form-control" placeholder="Upload File">
-      <div ref:svgHolder id='svg-holder'></div>
-    </form>
-    <button class="btn btn-lg btn-primary btn-block" id="render-button-svg">Render SVG</button>
-    <div  ref:canvasHolder class='image-preview'>
-      <canvas ref:canvas id='shape-canvas' width='500' height='500' style="border: 2px solid #000000;
-      background-color: gray;
-      width: 500px;
-      height: 500px;"></canvas>
+        <div id="canvas-tab" style="display: none;">
+          <div  ref:canvasHolder class='image-preview'>
+            <h1 class="h3 mb-3 font-weight-normal" style="text-align-last: center;">Draw in canvas</h1>
+            <canvas ref:canvas id='shape-canvas' width='500' height='500' 
+              style="border: 2px solid #000000;
+                  background-color: gray;
+                  margin: 0 auto;
+                  display: table;
+                  width: 500;
+                  height: 500;">
+            </canvas>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 text-center">
+              <button class="btn btn-primary btn-md center-block" id="clear-button-canvas" Style="width: 150px;">Clear Canvas</button>
+              <button class="btn btn-primary btn-md center-block" id="render-button-canvas" Style="width: 150px;">Render Canvas</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="leap-live" style="display: none;">
+          <table>
+            <tr>
+              <th>Frame Data</th><th>Hand Data</th><th>Finger Data</th>
+            </tr>
+            <tr>
+              <td id="frameData">Frame Data</td><td id="handData">Hand Data</td><td id="fingerData">Finger Data</td>
+            </tr>
+          </table>
+        
+          <div id="palm"></div>
+          <div class="finger"></div>
+          <div class="finger"></div>
+          <div class="finger"></div>
+          <div class="finger"></div>
+          <div class="finger"></div>
+        </div>
+      </div>
+
+      
     </div>
-    <button class="btn btn-lg btn-primary btn-block" id="clear-button-canvas">Clear Canvas</button>
-    <button class="btn btn-lg btn-primary btn-block" id="render-button-canvas">Render Canvas</button>
-  </div>
 
-  <table>
-    <tr>
-      <th>Frame Data</th><th>Hand Data</th><th>Finger Data</th>
-    </tr>
-    <tr>
-      <td id="frameData">Frame Data</td><td id="handData">Hand Data</td><td id="fingerData">Finger Data</td>
-    </tr>
-  </table>
-
-  <div id="palm"></div>
-  <!-- <div id= "palm-container" style= "border: 2px solid #000000;
-  background-color: gray;
-  width: 500px;
-  height: 500px;">
     
-  </div> -->
-  
-  
-
   </body>
 </html>

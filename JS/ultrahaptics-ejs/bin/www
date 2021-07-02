@@ -88,3 +88,18 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+
+/**
+ * Start Ultrahaptics exe
+ */
+//  const { exec } = require("child_process");
+//  try {
+//   exec("cd ../../csharp/UltrahapticsShapes/bin/x64/Debug/ & UltrahapticsShapes.exe",
+//    function(err, data) {
+//           console.log(err)
+//           console.log(data)
+//       })
+// } catch (e) {
+//   console.error(e)
+// }
