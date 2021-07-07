@@ -6,7 +6,7 @@ namespace UltrahapticsShapes
 {
     class TPS
     {
-        static TimePointStreamingEmitter _emitter;
+        private static TimePointStreamingEmitter _emitter;
 
         static uint _current = 0;
         static uint _timepoint_count = 0;
@@ -16,10 +16,13 @@ namespace UltrahapticsShapes
         private static bool Stop = false;
         public static void Stop_Emitter()
         {
-            Stop = true;
+            if (!Stop) {
+                Stop = true;
+            }
         }
         public static void Render()
         {
+            Stop = false;
             // Create a timepoint streaming emitter
             // Note that this automatically attempts to connect to the device, if present
             _emitter = new TimePointStreamingEmitter();
@@ -46,25 +49,9 @@ namespace UltrahapticsShapes
             // Set our callback to be called each time the device is ready for new points
             _emitter.setEmissionCallback(Callback, null);
             // Instruct the device to call our callback and begin emitting
-            bool isOK = _emitter.start();
+            _emitter.start();
 
-            if (isOK)
-            {
-                // Wait until the program is ready to stop
-                Console.ReadKey();
-                // Stop the emitter
-                _emitter.stop();
-            }
-            else
-            {
-                // We couldn't use the emitter, so exit immediately
-                Console.WriteLine("Could not start emitter.");
-            }
-
-            // Dispose/destroy the emitter
-            _emitter.Dispose();
-            _emitter = null;
-
+            
         }
 
         static void Callback(TimePointStreamingEmitter emitter, OutputInterval interval, TimePoint deadline, object user_obj)
@@ -73,6 +60,10 @@ namespace UltrahapticsShapes
                 _emitter.stop();
                 _emitter.Dispose();
                 _emitter = null;
+                
+                
+                Stop = false;
+                return;
             }
             // For each time point in this interval...
             foreach (var tpoint in interval)

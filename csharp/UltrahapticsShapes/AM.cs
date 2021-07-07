@@ -10,10 +10,13 @@ namespace UltrahapticsShapes
     {
         private static bool Stop = false; 
         public static void Stop_Emitter() {
-            Stop = true;
+            
+                Stop = true;
+            
         }
         public static void Render()
         {
+            Stop = false;
             string file_name = Path.Combine(Environment.CurrentDirectory, "list.csv");
             AmplitudeModulationEmitter emitter = new AmplitudeModulationEmitter();
 
@@ -49,13 +52,16 @@ namespace UltrahapticsShapes
                         //this condition will stop emitter from processing further
                         if (Stop)
                         {
-                            emitter.stop();
+                            emitter.update(new List<AmplitudeModulationControlPoint> {});
                             emitter.Dispose();
                             emitter = null;
+                            Stop = false;
+                            return;
                         }
                     }
                 }
             }
+        
         }
     }
 }
