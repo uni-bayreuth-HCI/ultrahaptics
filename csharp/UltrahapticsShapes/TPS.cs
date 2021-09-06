@@ -16,9 +16,11 @@ namespace UltrahapticsShapes
         private static bool Stop = false;
         public static void Stop_Emitter()
         {
+
             if (!Stop) {
                 Stop = true;
             }
+
         }
         public static void Render()
         {
@@ -57,8 +59,7 @@ namespace UltrahapticsShapes
         static void Callback(TimePointStreamingEmitter emitter, OutputInterval interval, TimePoint deadline, object user_obj)
         {
             if (Stop) {
-                _emitter.stop();
-                _emitter.Dispose();
+                Stop_Emitter();
                 _emitter = null;
                 
                 

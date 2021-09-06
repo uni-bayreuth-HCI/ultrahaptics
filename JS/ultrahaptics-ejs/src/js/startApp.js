@@ -2,6 +2,7 @@ import pathologize from './pathologize';
 import pathsToCoords from './pathsToCoords';
 import axios from 'axios';
 import leap from './leap';
+import leap_canvas from './leapCanvas.js'
 import canvas_script from './canvas_script';
 import cs_websocket from './cs_websocket'
 
@@ -38,12 +39,16 @@ export default function startApp () {
         handleRenderButtonCLicked(window.canvas_coordinates)
     }
 
+    var handleRenderLeapCanvasButtonCLicked = function() {
+        handleRenderButtonCLicked(window.leap_canvas_coordinates)
+    }
+
     var handleRenderSVGButtonCLicked = function() {
         handleRenderButtonCLicked(window.coordinates)
     }
 
     var handleStopClicked = function() {
-        window.ocs_websocket.send_message({"type":"stop"});
+        window.ocs_websocket ? window.ocs_websocket.send_message({"type":"stop"}) : null;
     }
 
     var handleRenderButtonCLicked = function(coordinates) {
@@ -61,7 +66,7 @@ export default function startApp () {
                   console.log(response)
                   if (response.data == 'Success') {
                     let render_type = $('#render-type option:selected').val()
-                    window.ocs_websocket.send_message({'type': render_type})
+                    window.ocs_websocket ? window.ocs_websocket.send_message({'type': render_type}) :null;
                   }
                   
               });
@@ -75,30 +80,38 @@ export default function startApp () {
             $("#file-form-tab").show();
             $("#canvas-tab").hide();
             $("#leap-live").hide();
+            $("#leap-canvas").hide();
             handleStopClicked();
-            // $("#file-form-tab").hide()
         } else if (this.innerText =="Canvas") {
             $("#file-form-tab").hide();
             $("#canvas-tab").show();
             $("#leap-live").hide();
+            $("#leap-canvas").hide();
             handleStopClicked();
-            // $("#file-form-tab").hide()
         } else if (this.innerText =="Leap live") {
             $("#file-form-tab").hide();
             $("#canvas-tab").hide();
             $("#leap-live").show();
+            $("#leap-canvas").hide();
             handleStopClicked();
-            // $("#file-form-tab").hide()
+            leap();
+        } else if (this.innerText == "Leap Canvas") {
+            $("#file-form-tab").hide();
+            $("#canvas-tab").hide();
+            $("#leap-live").hide();
+            $("#leap-canvas").show();
+            
+            handleStopClicked();
+            leap_canvas();
         }
-
-
     }
-    canvas_script();
-    leap();
+
+    canvas_script();    
     
     document.querySelector('#file_upload').addEventListener("change", handleFileUpload)
     document.getElementById('render-button-svg').addEventListener('click', handleRenderSVGButtonCLicked)
     document.getElementById('render-button-canvas').addEventListener('click', handleRenderCanvasButtonCLicked)
+    document.getElementById('render-button-leap-canvas').addEventListener('click', handleRenderLeapCanvasButtonCLicked)
     document.getElementById('stop').addEventListener('click', handleStopClicked);
     document.querySelectorAll('#navigationTab').forEach(item=> {
         item.addEventListener("click", handleTabChanged);

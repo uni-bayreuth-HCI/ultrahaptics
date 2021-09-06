@@ -16,7 +16,10 @@ export default function cs_websocket() {
 
     return {
         send_message : (data) => {
-            ws.send(JSON.stringify(data))
+            if(ws) {
+                ws.send(JSON.stringify(data))
+            }
+            
         },
 
     }

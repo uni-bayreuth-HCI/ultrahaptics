@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Net.Sockets;
-using System.Net;
-using System.Security.Cryptography;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace UltrahapticsShapes
 {
-    
+
     public class Laputa : WebSocketBehavior
     {
         protected override void OnMessage(MessageEventArgs e)
@@ -57,6 +54,5 @@ namespace UltrahapticsShapes
             Console.ReadKey(true);
             wssv.Stop();
         }
-    }
-    
+    }    
 }
