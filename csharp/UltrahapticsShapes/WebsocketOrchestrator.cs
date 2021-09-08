@@ -28,12 +28,12 @@ namespace UltrahapticsShapes
 
             if (Json_message["type"] == "AM")
             {
-                //Task.Factory.StartNew(() => AM.Render());
-                //Send("Check Ultrahaptics device!");
+                Task.Factory.StartNew(() => AM.Render());
+                Send("Check Ultrahaptics device!");
             }
 
             if (Json_message["type"] == "stop") {
-                //AM.Stop_Emitter();
+                AM.Stop_Emitter();
                 TPS.Stop_Emitter();
             }
 

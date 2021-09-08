@@ -1,12 +1,21 @@
 const ObjectsToCsv = require('objects-to-csv')
 const { exec } = require("child_process");
+const fs = require('fs')
+
+const path = "../../csharp/UltrahapticsShapes/bin/x64/Debug/list.csv";
+
 
 function renderCoordinates (coordinates) {
     let scalFact = getScalingFactor(coordinates)
     let scaledCoordinates = coordinates.map(coordinate=> coordinate.map(xy=> (xy/scalFact)- 0.04))
     const csv = new ObjectsToCsv(scaledCoordinates);
-    //csv.toDisk("list.csv")
-    csv.toDisk("../../csharp/UltrahapticsShapes/bin/x64/Debug/list.csv")
+    try {
+        fs.unlinkSync(path)
+        //file removed
+      } catch(err) {
+        console.error(err)
+      }
+    csv.toDisk(path);
     
     return "Success";
 }

@@ -8,11 +8,10 @@ namespace UltrahapticsShapes
 {
     public class AM
     {
-        private static bool Stop = false; 
+        private static bool Stop = false;
+        
         public static void Stop_Emitter() {
-            
-                Stop = true;
-            
+            Stop = true;
         }
         public static void Render()
         {
@@ -53,6 +52,7 @@ namespace UltrahapticsShapes
                         if (Stop)
                         {
                             emitter.update(new List<AmplitudeModulationControlPoint> {});
+
                             emitter.Dispose();
                             emitter = null;
                             Stop = false;

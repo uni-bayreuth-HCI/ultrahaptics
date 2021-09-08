@@ -16,10 +16,12 @@ namespace UltrahapticsShapes
         private static bool Stop = false;
         public static void Stop_Emitter()
         {
-
-            if (!Stop) {
-                Stop = true;
+            if (_emitter != null) {
+                _emitter.stop();
+                _emitter.Dispose();
+                _emitter = null;
             }
+            
 
         }
         public static void Render()
@@ -58,15 +60,7 @@ namespace UltrahapticsShapes
 
         static void Callback(TimePointStreamingEmitter emitter, OutputInterval interval, TimePoint deadline, object user_obj)
         {
-            if (Stop) {
-                Stop_Emitter();
-                _emitter = null;
-                
-                
-                Stop = false;
-                return;
-            }
-            // For each time point in this interval...
+            
             foreach (var tpoint in interval)
             {
                 // For each control point available at this time point...
