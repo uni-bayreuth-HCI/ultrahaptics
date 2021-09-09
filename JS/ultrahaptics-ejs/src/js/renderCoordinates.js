@@ -6,15 +6,26 @@ const path = "../../csharp/UltrahapticsShapes/bin/x64/Debug/list.csv";
 
 
 function renderCoordinates (coordinates) {
-    let scalFact = getScalingFactor(coordinates)
-    let scaledCoordinates = coordinates.map(coordinate=> coordinate.map(xy=> (xy/scalFact)- 0.04))
+  //=======================
+  // const csvw = new ObjectsToCsv(coordinates);
+  // csvw.toDisk("../../csharp/UltrahapticsShapes/bin/x64/Debug/listaaaa.csv");  
+  //=======================
+    let scalingFact = getScalingFactor(coordinates)
+    let scaledCoordinates = coordinates.map(coordinate=> coordinate.map(xy=> (xy/scalingFact)- 0.04));
+    scaledCoordinates.map(cord=> cord[1] = (0-cord[1])); //mirror x
+    // scaledCoordinates.map(cord=> {
+    //   temp = cord[1];
+    //   cord[1] = (-cord[0])
+    //   cord[0] = temp;
+    // })
+
     const csv = new ObjectsToCsv(scaledCoordinates);
     try {
         fs.unlinkSync(path)
         //file removed
-      } catch(err) {
+    } catch(err) {
         console.error(err)
-      }
+    }
     csv.toDisk(path);
     
     return "Success";

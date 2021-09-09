@@ -54,7 +54,8 @@ export default function startApp () {
     var handleRenderButtonCLicked = function(coordinates) {
         let render_type = $('#render-type option:selected').val()
         if (render_type == 'select') {
-            alert("Please select type of rendering!")
+            // alert("Please select type of rendering!")
+            toastr["error"]("Please select type of rendering, from top left drop down.", "Ultrahaptics")
         } else {
             axios({
                 method: 'post',
@@ -71,8 +72,6 @@ export default function startApp () {
                   
               });
         }
-
-        
     }
     var handleTabChanged = function(event) {
         
@@ -87,6 +86,13 @@ export default function startApp () {
             $("#canvas-tab").show();
             $("#leap-live").hide();
             $("#leap-canvas").hide();
+            var canvas = document.getElementById('shape-canvas');
+            var ctx = canvas.getContext('2d');
+            ctx.fillStyle = "#FFFFFF";
+            ctx.clearRect(0, 0, ctx.width, ctx.height);
+            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.beginPath();
+            window.canvas_coordinates = []
             handleStopClicked();
         } else if (this.innerText =="Leap live") {
             $("#file-form-tab").hide();
@@ -116,5 +122,23 @@ export default function startApp () {
     document.querySelectorAll('#navigationTab').forEach(item=> {
         item.addEventListener("click", handleTabChanged);
     })
-    
+
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "500",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      }
+
 }

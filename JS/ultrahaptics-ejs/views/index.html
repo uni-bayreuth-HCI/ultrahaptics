@@ -43,6 +43,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
     <script type="text/javascript" src="main.js"></script>
     <script src="https://js.leapmotion.com/leap-0.6.4.min.js"></script>
     <link type="stylesheet" src='main.css'> </link>
@@ -51,10 +54,10 @@
   </head>
   
   <body onload="main()">
-      <div id="bodycontainer" style="width:75%;margin:auto;">
+    <div id="bodycontainer" style="width:75%;margin:auto;">
       <div class="navbar ">
-        <select id="render-type" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" style="margin-left:20px;">
-          <option value="select" selected>----select----</option>
+        <select id="render-type" class="form-select form-select-lg " aria-label=".form-select-lg example" style="margin-left:20px;">
+          <option value="select" selected>-Select type of Rendering-</option>
           <option value="AM">Amplitude Modulation</option>
           <option value="TPS">Time Point Streaming</option>
           <!-- <option value="CI">Custom Intelligent</option> -->
@@ -143,6 +146,8 @@
           </div>
         </div>
       </div>      
-    </div>    
+      
+    </div>
+    <div id="toast"></div>
   </body>
 </html>

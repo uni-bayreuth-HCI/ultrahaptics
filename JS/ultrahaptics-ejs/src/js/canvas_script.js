@@ -23,11 +23,12 @@ export default function canvas_script () {
   }
 
   // clear the drawing
-  function reset_canvas(){
+  function reset_canvas() {
       ctx.fillStyle = "#FFFFFF";
       ctx.clearRect(0, 0, ctx.width, ctx.height);
       ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       ctx.beginPath();
+      window.canvas_coordinates = []
   }
 
   // allow user to draw on the canvas by connecting subsequent mouse points with a line

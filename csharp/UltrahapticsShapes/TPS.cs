@@ -54,8 +54,6 @@ namespace UltrahapticsShapes
             _emitter.setEmissionCallback(Callback, null);
             // Instruct the device to call our callback and begin emitting
             _emitter.start();
-
-            
         }
 
         static void Callback(TimePointStreamingEmitter emitter, OutputInterval interval, TimePoint deadline, object user_obj)
@@ -76,6 +74,5 @@ namespace UltrahapticsShapes
                 _current = (_current + 1) % (uint)_positions.Length;
             }
         }
-
     }
 }

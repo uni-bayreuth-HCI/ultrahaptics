@@ -1,7 +1,7 @@
 export default function leap_canvas() {
 
-  var controller = new Leap.Controller({enableGestures: true});
-  var ctrl = new Leap.Controller({enableGestures: true});
+  var controller = new Leap.Controller({enableGestures: true, frameEventName: 'deviceFrame'});
+  var ctrl = new Leap.Controller({enableGestures: true, frameEventName: 'deviceFrame'});
   var canvas = document.getElementById('leapcanvas');
   var context = canvas.getContext('2d');
   
@@ -37,7 +37,7 @@ export default function leap_canvas() {
       });
       ctrl.on('gesture', function (gesture) {
         if (gesture.type == 'keyTap') {
-          alert("Drawing stopped!");
+          toastr["info"]('Drawing stopped.', "Leap")
           ctrl.disconnect();
         }
       });
