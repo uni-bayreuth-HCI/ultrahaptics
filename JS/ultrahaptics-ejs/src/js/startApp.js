@@ -78,13 +78,13 @@ export default function startApp () {
         if (this.innerText =="File") {
             $("#file-form-tab").show();
             $("#canvas-tab").hide();
-            $("#leap-live").hide();
+            $("#leap-live-canvas").hide();
             $("#leap-canvas").hide();
             handleStopClicked();
         } else if (this.innerText =="Canvas") {
             $("#file-form-tab").hide();
             $("#canvas-tab").show();
-            $("#leap-live").hide();
+            $("#leap-live-canvas").hide();
             $("#leap-canvas").hide();
             var canvas = document.getElementById('shape-canvas');
             var ctx = canvas.getContext('2d');
@@ -97,18 +97,21 @@ export default function startApp () {
         } else if (this.innerText =="Leap live") {
             $("#file-form-tab").hide();
             $("#canvas-tab").hide();
-            $("#leap-live").show();
+            $("#leap-live-canvas").show();
             $("#leap-canvas").hide();
             handleStopClicked();
-            leap();
+
+            setTimeout(function(){ alert("Leap Live Ready");
+            leap(); }, 2000);
         } else if (this.innerText == "Leap Canvas") {
             $("#file-form-tab").hide();
             $("#canvas-tab").hide();
-            $("#leap-live").hide();
-            $("#leap-canvas").show();
-            
+            $("#leap-live-canvas").hide();
+            $("#leap-canvas").show();            
             handleStopClicked();
-            leap_canvas();
+            
+            setTimeout(function(){ alert("Leap Canvas Ready");
+            leap_canvas(); }, 2000);
         }
     }
 
