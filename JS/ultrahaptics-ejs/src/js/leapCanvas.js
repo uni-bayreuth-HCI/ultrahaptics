@@ -4,9 +4,9 @@ export default function leap_canvas() {
   var ctrl = new Leap.Controller({enableGestures: true, frameEventName: 'deviceFrame'});
   var canvas = document.getElementById('leapcanvas');
   var context = canvas.getContext('2d');
+
+  reset_canvas();
   
-  //reset_canvas();
-  controller.connect();
   window.leap_canvas_coordinates = []
 
   var centerX = 0;
@@ -19,8 +19,7 @@ export default function leap_canvas() {
     context.clearRect(0, 0, context.width, context.height);
     context.fillRect(0, 0, context.canvas.width, context.canvas.height);
     context.beginPath();
-    //controller.connect();
-    connect_controller()
+    controller.connect();
   }   
   
   controller.on('gesture', function (gesture) {
@@ -35,6 +34,7 @@ export default function leap_canvas() {
           draw(x + centerX, canvas.height - y);
         }
       });
+      
       ctrl.on('gesture', function (gesture) {
         if (gesture.type == 'keyTap') {
           toastr["info"]('Drawing stopped.', "Leap")
@@ -68,7 +68,7 @@ export default function leap_canvas() {
     context.beginPath();
     context.arc(x, y, radius, 0, Math.PI * 2, false);
     context.fill();
-    window.leap_canvas_coordinates.push([x,y])
+    window.leap_canvas_coordinates.push([x/0.0,y])
   }
 
   function fadeOut(text) {
@@ -84,13 +84,9 @@ export default function leap_canvas() {
                 clearInterval(interval);
             }
         }, 50); 
-  }
-
-  function connect_controller() {
-    controller.connect();
   } 
 
-  //controller.connect();
+  controller.connect();
   
   document.getElementById('clear-leap-canvas').addEventListener('click', reset_canvas);
 

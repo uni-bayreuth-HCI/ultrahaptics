@@ -43,56 +43,105 @@ export default function leap() {
     //     }
     // })
 
-var canvas = document.getElementById('leaplivecanvas');
-var ctx = canvas.getContext('2d');
-   
-var info = document.getElementById('data');
-var radius = 10;
+  var controller = new Leap.Controller({enableGestures: true});
+  var ctrl = new Leap.Controller({enableGestures: true});
+  var canvas = document.getElementById('leaplivecanvas');
+  var ctx = canvas.getContext('2d');   
+  
+  reset_canvas();
 
-// set the canvas to cover the screen
-canvas.width = document.body.clientWidth;
-canvas.height = document.body.clientHeight;
+  window.leap_live_canvas_coordinates = []
 
-// move the context co-ordinates to the bottom middle of the screen
-ctx.translate(canvas.width/2, canvas.height);
+  var centerX = 0;
+  var centerY = 0;
+  
+  sizing(); 
 
-ctx.fillStyle = "rgba(0,0,0,0.9)";
-ctx.strokeStyle = "rgba(255,0,0,0.9)";
-ctx.lineWidth = 5;
+  function reset_canvas(){
+    ctx.fillStyle = "#FFFFFF";
+    ctx.clearRect(0, 0, ctx.width, ctx.height);
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.beginPath();
+    controller.connect();
+  }
 
-function draw(frame) {
-// set up data array and other variables
-var data = [],
-    pos, i, len;
+  $(window).resize(function() {
+    sizing();
+    draw(centerX, centerY);
+  });
 
-// cover the canvas with a 10% opaque layer for fade out effect.
-ctx.fillStyle = "rgba(255,255,255,0.1)";
-ctx.fillRect(-canvas.width/2,-canvas.height,canvas.width,canvas.height);
+  function sizing() {
+    centerX = canvas.width / 2;
+    centerY = canvas.height / 2;
+  }
 
-// set the fill to black for the points
-ctx.fillStyle = "rgba(0,0,0,0.9)";
+  // controller.on('frame', function(frame) {
+  //   if (frame.fingers[0]) {
+  //     var x = frame.fingers[1].tipPosition[0];
+  //     var y = frame.fingers[1].tipPosition[1];
+  //     window.leap_live_canvas_coordinates.push([x,y])
+  //     draw(x + centerX, canvas.height - y);
+  //   }
+  // });
 
-// loop over the frame's pointables
-for (i=0, len=frame.pointables.length; i<len; i++) {
-  // get the pointable and its position
-  pos = frame.pointables[i].tipPosition;
+  controller.on('gesture', function (gesture) {
+    if (gesture.type == 'keyTap') {
+      fadeOut('Start Drawing!');
+      controller.disconnect();
+      ctrl.connect();
+      ctrl.on('frame', function(frame) {
+        if (frame.fingers[0]) {
+          var x = frame.fingers[1].tipPosition[0];
+          var y = frame.fingers[1].tipPosition[1];
+          window.leap_live_canvas_coordinates.push([x,y])
+          draw(x + centerX, canvas.height - y);
+          
+        }
+      });
+      
+      ctrl.on('gesture', function (gesture) {
+        if (gesture.type == 'keyTap') {
+          alert("Drawing stopped!");
+          ctrl.disconnect();
+        }
+      });
+    }
+  });
 
-  // add the position data to our data array
-  data.push(pos);
+  
+  function draw(x, y, radius) {
+    if (typeof radius === 'undefined') {
+      radius = 4;
+    } 
+    else {
+      radius = radius < 4 ? 4 : radius;
+    }
+    ctx.strokeStyle = '#FFFFFF';
+    ctx.fillStyle = '#000000';
+    ctx.lineWidth = 5;
+    //ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.fillRect(x, y, 4, 4);
+    //ctx.fill();
+  }  
 
-  // draw the circle where the pointable is
-  ctx.beginPath();
-  ctx.arc(pos.x-radius/2 ,-(pos.y-radius/2),radius,0,2*Math.PI);
-  ctx.fill();
-  ctx.stroke();
-}
+  controller.connect();  
 
-// print out our position points
-info.innerHTML = data.join(', ');
-};
+  function fadeOut(text) {
+    var alpha = 1.0,   // full opacity
+        interval = setInterval(function () {
+            canvas.width = canvas.width; // Clears the canvas
+            ctx.fillStyle = "#000000" + alpha + ")";
+            ctx.font = "italic 20pt Arial";
+            ctx.fillText(text, 50, 50);
+            alpha = alpha - 0.05; // decrease opacity (fade out)
+            if (alpha < 0) {
+                canvas.width = canvas.width;
+                clearInterval(interval);
+            }
+        }, 50); 
+  }
 
-// run the animation loop with the draw command
-Leap.loop(draw);
-
+  document.getElementById('clear-leap-live-canvas').addEventListener('click', reset_canvas);
 
 }

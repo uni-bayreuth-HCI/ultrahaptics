@@ -36,7 +36,7 @@
         width: 100%;
         text-align:center;
       }
-      #leap-canvas {
+      #leap-canvas, #leap-live-canvas {
         display: inline;
       }
       </style>
@@ -104,26 +104,24 @@
           </div>
         </div>
 
-        <div id="leap-live" style="display: none;">
-          <!-- <table>
-            <tr>
-              <th>Frame Data</th><th>Hand Data</th><th>Finger Data</th>
-            </tr>
-            <tr>
-              <td id="frameData">Frame Data</td><td id="handData">Hand Data</td><td id="fingerData">Finger Data</td>
-            </tr>
-          </table>
-        
-          <div id="palm"></div>
-          <div class="finger"></div>
-          <div class="finger"></div>
-          <div class="finger"></div>
-          <div class="finger"></div>
-          <div class="finger"></div> -->
-          <div  ref:canvasHolder class='image-preview'></div>
-            <p id="data"></p>
-            <canvas id="leaplivecanvas" style="display:block;"></canvas>
-          </div>  
+        <div id="leap-live-canvas" style="display: none;">          
+            <div  ref:canvasHolder class='image-preview'>
+              <h1 class="h3 mb-3 font-weight-normal" style="text-align-last: center;">Draw in canvas using leap motion</h1>
+              <canvas ref:canvas id='leaplivecanvas' width='500' height='500' 
+                style="border: 2px solid #000000;
+                    background-color: white;
+                    margin: 0 auto;
+                    display: table;
+                    width: 500;
+                    height: 500;">
+              </canvas> 
+            </div>
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <button class="btn btn-primary btn-md center-block" id="clear-leap-live-canvas" Style="width: 150px;">Clear Canvas</button>
+                <button class="btn btn-primary btn-md center-block" id="render-button-leap-live-canvas" Style="width: 150px;">Render Canvas</button>
+              </div>
+            </div>
         </div>
 
         <div id="leap-canvas" style="display: none;">
