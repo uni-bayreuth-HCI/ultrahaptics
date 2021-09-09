@@ -5,9 +5,8 @@ export default function cs_websocket() {
         ws.send("BALUS");
     }
     ws.onmessage = (evt)=>  {
-        //alert("About to receive data");
+        
         var received_msg = evt.data;
-        // alert("Message received = "+ received_msg);
         toastr["info"](received_msg, "Ultrahaptics")
     };
     ws.onclose =()=> {
