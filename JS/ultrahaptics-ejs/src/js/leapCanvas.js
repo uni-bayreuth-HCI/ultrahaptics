@@ -68,7 +68,7 @@ export default function leap_canvas() {
     context.beginPath();
     context.arc(x, y, radius, 0, Math.PI * 2, false);
     context.fill();
-    window.leap_canvas_coordinates.push([x/0.0,y])
+    window.leap_canvas_coordinates.push([x,y])
   }
 
   function fadeOut(text) {
@@ -85,6 +85,8 @@ export default function leap_canvas() {
             }
         }, 50); 
   } 
+
+  toastr["info"]('KeyTap gesture to start drawing!', "Leap")
 
   controller.connect();
   

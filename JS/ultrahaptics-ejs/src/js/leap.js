@@ -43,8 +43,8 @@ export default function leap() {
     //     }
     // })
 
-  var controller = new Leap.Controller({enableGestures: true});
-  var ctrl = new Leap.Controller({enableGestures: true});
+  var controller = new Leap.Controller({enableGestures: true, frameEventName: 'deviceFrame'});
+  var ctrl = new Leap.Controller({enableGestures: true, frameEventName: 'deviceFrame'});
   var canvas = document.getElementById('leaplivecanvas');
   var ctx = canvas.getContext('2d');   
   
@@ -116,13 +116,12 @@ export default function leap() {
     else {
       radius = radius < 4 ? 4 : radius;
     }
-    ctx.strokeStyle = '#FFFFFF';
-    ctx.fillStyle = '#000000';
-    ctx.lineWidth = 5;
-    //ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.fillRect(x, y, 4, 4);
-    //ctx.fill();
+    //ctx.strokeStyle = '#FFFFFF';
+    ctx.fillStyle = '#FFFFFF';
+    //ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+    ctx.fill();
   }  
 
   controller.connect();  

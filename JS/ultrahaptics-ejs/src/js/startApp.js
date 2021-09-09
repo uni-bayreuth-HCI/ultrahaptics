@@ -101,7 +101,7 @@ export default function startApp () {
             $("#leap-canvas").hide();
             handleStopClicked();
 
-            setTimeout(function(){ alert("Leap Live Ready");
+            setTimeout(function(){ toastr["success"]('Leap Live Ready', "Leap");
             leap(); }, 2000);
         } else if (this.innerText == "Leap Canvas") {
             $("#file-form-tab").hide();
@@ -110,7 +110,7 @@ export default function startApp () {
             $("#leap-canvas").show();            
             handleStopClicked();
             
-            setTimeout(function(){ alert("Leap Canvas Ready");
+            setTimeout(function(){ toastr["success"]('Leap Canvas Ready', "Leap");
             leap_canvas(); }, 2000);
         }
     }
