@@ -54,7 +54,7 @@ export default function startApp () {
     var handleRenderButtonCLicked = function(coordinates) {
         let render_type = $('#render-type option:selected').val()
         if (render_type == 'select') {
-            // alert("Please select type of rendering!")
+            
             toastr["error"]("Please select type of rendering, from top left drop down.", "Ultrahaptics")
         } else {
             axios({
@@ -131,7 +131,7 @@ export default function startApp () {
         "debug": false,
         "newestOnTop": false,
         "progressBar": false,
-        "positionClass": "toast-top-right",
+        "positionClass": "toast-bottom-right",
         "preventDuplicates": false,
         "onclick": null,
         "showDuration": "500",
