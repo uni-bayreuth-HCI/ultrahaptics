@@ -9,7 +9,10 @@ namespace UltrahapticsShapes
     public class AM
     {
         private static bool Stop = false;
-        
+        private static AmplitudeModulationEmitter emitter;
+        private static  float intensity = 1.0f;
+        private static float frequency = 200.0f;
+
         public static void Stop_Emitter() {
             Stop = true;
         }
@@ -17,10 +20,9 @@ namespace UltrahapticsShapes
         {
             Stop = false;
             string file_name = Path.Combine(Environment.CurrentDirectory, "list.csv");
-            AmplitudeModulationEmitter emitter = new AmplitudeModulationEmitter();
+            emitter = new AmplitudeModulationEmitter();
 
-            float intensity = 1.0f;
-            float frequency = 200.0f;
+            
             for (; ; )
             {
                 using (TextFieldParser parser = new TextFieldParser(file_name))
@@ -62,6 +64,37 @@ namespace UltrahapticsShapes
                 }
             }
         
+        }
+
+        public static void RenderLive()
+        {
+            Stop = false;
+            emitter = new AmplitudeModulationEmitter();
+            Vector3 position = new Vector3((float)(0 * Ultrahaptics.Units.metres), (float)(0 * Ultrahaptics.Units.metres), (float)(0.15 * Ultrahaptics.Units.metres));
+            AmplitudeModulationControlPoint point = new AmplitudeModulationControlPoint(position, intensity, frequency);
+            var points = new List<AmplitudeModulationControlPoint> { point };
+            emitter.update(points);
+            if (Stop)
+            {
+                emitter.update(new List<AmplitudeModulationControlPoint> { });
+                emitter.Dispose();
+                emitter = null;
+                Stop = false;
+                return;
+            }
+         
+
+        }
+
+        public static void updateLiveRenderPoint(float updated_x, float updated_y) {
+            if (emitter != null) {
+                Vector3 position = new Vector3((float)(updated_x * Ultrahaptics.Units.metres), (float)(updated_y * Ultrahaptics.Units.metres), (float)(0.15 * Ultrahaptics.Units.metres));
+                AmplitudeModulationControlPoint point = new AmplitudeModulationControlPoint(position, intensity, frequency);
+                var points = new List<AmplitudeModulationControlPoint> { point };
+                emitter.update(points);
+                Console.WriteLine(updated_x + " " + updated_y);
+            }
+            
         }
     }
 }

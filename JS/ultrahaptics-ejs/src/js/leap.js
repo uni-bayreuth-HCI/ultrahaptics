@@ -1,47 +1,6 @@
+import cs_websocket from "./cs_websocket";
+
 export default function leap() {
-    // var frameData = document.getElementById('frameData');
-    // var handData = document.getElementById('handData');
-    // var fingerData = document.getElementById('fingerData');
-    // var palmDisplay = document.getElementById('palm');
-    // var fingersDisplay = document.getElementsByClassName('finger');
-
-    // Leap.loop(function (frame) {
-
-    //     // Get and show frame data
-    //     frameData.innerHTML = "Frame ID: " + frame.id + "<br>"
-    //         + "No of Hands: " + frame.hands.length + "<br>"
-    //         + "No of Fingers: " + frame.fingers.length + "";
-
-    //     // Get and show hand data
-    //     handData.innerHTML = "";
-    //     for (var i = 0; i < frame.hands.length; i++) {
-    //         var hand = frame.hands[i];
-    //         handData.innerHTML += "Hand ID: " + hand.id + "<br>"
-    //             + "Hand Type: " + hand.type + "<br>"
-    //             + "Palm Position: " + hand.palmPosition + "<br>"
-    //             + "Grab Strength: " + hand.grabStrength + "<br>"
-    //             + "Pinch Strength: " + hand.pinchStrength + "<br><br>";
-
-    //         var normalizedPalmPosition = frame.interactionBox.normalizePoint(hand.palmPosition, true);
-
-    //         var palmX = window.innerWidth * normalizedPalmPosition[0] - palmDisplay.offsetWidth / 2;
-    //         palmDisplay.style.left = palmX + "px";
-
-    //         var palmY = window.innerHeight * (1 - normalizedPalmPosition[1]) - palmDisplay.offsetHeight / 2;
-    //         palmDisplay.style.top = palmY + "px";
-
-
-    //     }
-    //     // Get and show finger data
-    //     fingerData.innerHTML = "";
-    //     for (var k = 0; k < frame.fingers.length; k++) {
-    //         var finger = frame.fingers[k];
-    //         fingerData.innerHTML += "Finger ID: " + finger.id + "<br>"
-    //             + "Belong to Hand ID: " + finger.handId + "<br>"
-    //             + "Finger Tip Position: " + finger.tipPosition + "<br>"
-    //             + "Finger Type: " + finger.type + "<br>" + "<br>";
-    //     }
-    // })
 
   var controller = new Leap.Controller({enableGestures: true, frameEventName: 'deviceFrame'});
   var ctrl = new Leap.Controller({enableGestures: true, frameEventName: 'deviceFrame'});
@@ -62,12 +21,12 @@ export default function leap() {
     ctx.clearRect(0, 0, ctx.width, ctx.height);
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.beginPath();
+    window.leap_live_canvas_coordinates = []
     controller.connect();
   }
 
   $(window).resize(function() {
     sizing();
-    draw(centerX, centerY);
   });
 
   function sizing() {
@@ -75,33 +34,31 @@ export default function leap() {
     centerY = canvas.height / 2;
   }
 
-  // controller.on('frame', function(frame) {
-  //   if (frame.fingers[0]) {
-  //     var x = frame.fingers[1].tipPosition[0];
-  //     var y = frame.fingers[1].tipPosition[1];
-  //     window.leap_live_canvas_coordinates.push([x,y])
-  //     draw(x + centerX, canvas.height - y);
-  //   }
-  // });
-
   controller.on('gesture', function (gesture) {
     if (gesture.type == 'keyTap') {
-      fadeOut('Start Drawing!');
+      toastr["info"]('Start Drawing', "Leap");
+
+      window.ocs_websocket ? window.ocs_websocket.send_message({type:'leap-live-start',X:0, Y:0}) :null;
+
+      
       controller.disconnect();
       ctrl.connect();
       ctrl.on('frame', function(frame) {
         if (frame.fingers[0]) {
           var x = frame.fingers[1].tipPosition[0];
           var y = frame.fingers[1].tipPosition[1];
-          window.leap_live_canvas_coordinates.push([x,y])
-          draw(x + centerX, canvas.height - y);
-          
+
+          window.ocs_websocket ? window.ocs_websocket.send_message({type:'leap-live-update',X:(x - 250), Y: (0 -(y - 250))}) :null;
+          //console.log({type:'leap-live-update',X:(x - 250) * 0.32, Y: (0 -(y - 250)) * 0.32});
+          console.log(x - centerX + " " + y - centerY);
+          draw(x + centerX, canvas.height - y);          
         }
       });
       
       ctrl.on('gesture', function (gesture) {
         if (gesture.type == 'keyTap') {
-          alert("Drawing stopped!");
+          toastr["info"]('Drawing stopped.', "Leap")
+          window.leap_live_canvas_coordinates = []
           ctrl.disconnect();
         }
       });
@@ -110,37 +67,36 @@ export default function leap() {
 
   
   function draw(x, y, radius) {
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     if (typeof radius === 'undefined') {
       radius = 4;
     } 
     else {
       radius = radius < 4 ? 4 : radius;
     }
-    //ctx.strokeStyle = '#FFFFFF';
-    ctx.fillStyle = '#FFFFFF';
-    //ctx.lineWidth = 5;
+    
+    ctx.fillStyle = '#000000';
+    ctx.strokeStyle = '#000000';
     ctx.beginPath();
-    ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+    ctx.arc(x, y, radius, 0, Math.PI * 2, true);
     ctx.fill();
+
+    // cs_websocket.send({type:'leap live',X:x, Y:y})
+
+    // console.log(x + " " + y + "\n")
+    
   }  
+
+  toastr["info"]('KeyTap gesture to start drawing!', "Leap")
+
+  controller.on('deviceAttached', function (gesture) {
+    toastr["info"]('Leap Motion device is ready!', "Leap")
+  });
 
   controller.connect();  
 
-  function fadeOut(text) {
-    var alpha = 1.0,   // full opacity
-        interval = setInterval(function () {
-            canvas.width = canvas.width; // Clears the canvas
-            ctx.fillStyle = "#000000" + alpha + ")";
-            ctx.font = "italic 20pt Arial";
-            ctx.fillText(text, 50, 50);
-            alpha = alpha - 0.05; // decrease opacity (fade out)
-            if (alpha < 0) {
-                canvas.width = canvas.width;
-                clearInterval(interval);
-            }
-        }, 50); 
-  }
-
-  document.getElementById('clear-leap-live-canvas').addEventListener('click', reset_canvas);
+  document.getElementById('start-leap-button').addEventListener('click', reset_canvas);
 
 }

@@ -13,8 +13,9 @@ namespace UltrahapticsShapes
     {
         protected override void OnMessage(MessageEventArgs e)
         {
-            Console.WriteLine(e.Data);
+            
             if (e.Data == "BALUS") {
+                Console.WriteLine(e.Data);
                 Send("You are connected to ultrahaptics");
                 return;
             }
@@ -30,6 +31,17 @@ namespace UltrahapticsShapes
             {
                 Task.Factory.StartNew(() => AM.Render());
                 Send("Check Ultrahaptics device!");
+            }
+            if (Json_message["type"] == "leap-live-start") {
+                
+                Task.Factory.StartNew(() => AM.RenderLive());
+            }
+
+            if (Json_message["type"] == "leap-live-update")
+            {
+
+                AM.updateLiveRenderPoint(float.Parse(Json_message["X"]), float.Parse(Json_message["Y"]));
+
             }
 
             if (Json_message["type"] == "stop") {

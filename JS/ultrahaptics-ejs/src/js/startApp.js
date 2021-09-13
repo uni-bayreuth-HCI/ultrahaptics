@@ -78,14 +78,14 @@ export default function startApp () {
         if (this.innerText =="File") {
             $("#file-form-tab").show();
             $("#canvas-tab").hide();
-            $("#leap-live-canvas").hide();
-            $("#leap-canvas").hide();
+            $("#leap-live-canvas-tab").hide();
+            $("#leap-canvas-tab").hide();
             handleStopClicked();
         } else if (this.innerText =="Canvas") {
             $("#file-form-tab").hide();
             $("#canvas-tab").show();
-            $("#leap-live-canvas").hide();
-            $("#leap-canvas").hide();
+            $("#leap-live-canvas-tab").hide();
+            $("#leap-canvas-tab").hide();
             var canvas = document.getElementById('shape-canvas');
             var ctx = canvas.getContext('2d');
             ctx.fillStyle = "#FFFFFF";
@@ -97,8 +97,8 @@ export default function startApp () {
         } else if (this.innerText =="Leap live") {
             $("#file-form-tab").hide();
             $("#canvas-tab").hide();
-            $("#leap-live-canvas").show();
-            $("#leap-canvas").hide();
+            $("#leap-live-canvas-tab").show();
+            $("#leap-canvas-tab").hide();
             handleStopClicked();
 
             setTimeout(function(){ toastr["success"]('Leap Live Ready', "Leap");
@@ -106,8 +106,8 @@ export default function startApp () {
         } else if (this.innerText == "Leap Canvas") {
             $("#file-form-tab").hide();
             $("#canvas-tab").hide();
-            $("#leap-live-canvas").hide();
-            $("#leap-canvas").show();            
+            $("#leap-live-canvas-tab").hide();
+            $("#leap-canvas-tab").show();            
             handleStopClicked();
             
             setTimeout(function(){ toastr["success"]('Leap Canvas Ready', "Leap");

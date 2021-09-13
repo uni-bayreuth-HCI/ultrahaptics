@@ -19,6 +19,7 @@ export default function leap_canvas() {
     context.clearRect(0, 0, context.width, context.height);
     context.fillRect(0, 0, context.canvas.width, context.canvas.height);
     context.beginPath();
+    window.leap_canvas_coordinates = []
     controller.connect();
   }   
   
@@ -90,6 +91,6 @@ export default function leap_canvas() {
 
   controller.connect();
   
-  document.getElementById('clear-leap-canvas').addEventListener('click', reset_canvas);
+  document.getElementById('clear-button-leap-canvas').addEventListener('click', reset_canvas);
 
 }
