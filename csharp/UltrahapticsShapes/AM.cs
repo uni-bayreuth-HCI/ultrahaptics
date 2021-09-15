@@ -70,7 +70,7 @@ namespace UltrahapticsShapes
         {
             Stop = false;
             emitter = new AmplitudeModulationEmitter();
-            Vector3 position = new Vector3((float)(0 * Ultrahaptics.Units.metres), (float)(0 * Ultrahaptics.Units.metres), (float)(0.15 * Ultrahaptics.Units.metres));
+            Vector3 position = new Vector3((float)(0 * Ultrahaptics.Units.metres), (float)(0 * Ultrahaptics.Units.metres), (float)(0.20 * Ultrahaptics.Units.metres));
             AmplitudeModulationControlPoint point = new AmplitudeModulationControlPoint(position, intensity, frequency);
             var points = new List<AmplitudeModulationControlPoint> { point };
             emitter.update(points);

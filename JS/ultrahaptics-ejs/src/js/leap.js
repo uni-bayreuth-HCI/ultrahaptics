@@ -51,7 +51,7 @@ export default function leap() {
           var scalingfactor = 500/0.16
           // console.log(x + centerX, );
           draw(x + centerX, canvas.height - y);          
-          window.ocs_websocket ? window.ocs_websocket.send_message({type:'leap-live-update',X:(x+centerX)/scalingfactor, Y: (0 -(canvas.height - y)/scalingfactor)}) :null;
+          window.ocs_websocket ? window.ocs_websocket.send_message({type:'leap-live-update',X:(x+centerX)/scalingfactor -0.08, Y: (0 -(canvas.height - y)/scalingfactor)+0.08})  :null;
         }
       });
       
