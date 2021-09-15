@@ -74,16 +74,6 @@ namespace UltrahapticsShapes
             AmplitudeModulationControlPoint point = new AmplitudeModulationControlPoint(position, intensity, frequency);
             var points = new List<AmplitudeModulationControlPoint> { point };
             emitter.update(points);
-            if (Stop)
-            {
-                emitter.update(new List<AmplitudeModulationControlPoint> { });
-                emitter.Dispose();
-                emitter = null;
-                Stop = false;
-                return;
-            }
-         
-
         }
 
         public static void updateLiveRenderPoint(float updated_x, float updated_y) {
@@ -94,7 +84,20 @@ namespace UltrahapticsShapes
                 emitter.update(points);
                 Console.WriteLine(updated_x + " " + updated_y);
             }
-            
+            if (Stop)
+            {
+                try {
+                    emitter.update(new List<AmplitudeModulationControlPoint> { });
+                    emitter.Dispose();
+                    emitter = null;
+                } catch (Exception e) {
+                    Console.WriteLine(e.Message);
+                }
+                
+                Stop = false;
+                return;
+            }
+
         }
     }
 }

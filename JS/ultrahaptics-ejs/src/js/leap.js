@@ -48,17 +48,18 @@ export default function leap() {
           var x = frame.fingers[1].tipPosition[0];
           var y = frame.fingers[1].tipPosition[1];
 
-          window.ocs_websocket ? window.ocs_websocket.send_message({type:'leap-live-update',X:(x - 250), Y: (0 -(y - 250))}) :null;
-          //console.log({type:'leap-live-update',X:(x - 250) * 0.32, Y: (0 -(y - 250)) * 0.32});
-          console.log(x - centerX + " " + y - centerY);
+          var scalingfactor = 500/0.16
+          // console.log(x + centerX, );
           draw(x + centerX, canvas.height - y);          
+          window.ocs_websocket ? window.ocs_websocket.send_message({type:'leap-live-update',X:(x+centerX)/scalingfactor, Y: (0 -(canvas.height - y)/scalingfactor)}) :null;
         }
       });
       
       ctrl.on('gesture', function (gesture) {
         if (gesture.type == 'keyTap') {
-          toastr["info"]('Drawing stopped.', "Leap")
-          window.leap_live_canvas_coordinates = []
+          toastr["info"]('Drawing stopped.', "Leap");
+          window.ocs_websocket ? window.ocs_websocket.send_message({"type":"stop"}) : null;
+          window.leap_live_canvas_coordinates = [];
           ctrl.disconnect();
         }
       });
