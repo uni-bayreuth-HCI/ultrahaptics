@@ -17,14 +17,34 @@ export default function startApp () {
     window.ocs_websocket = cs_websocket();
     window.coordinates;
     var handleFileUpload = function (e) {
+        window.coordinates = [];
         let file = this.files[0];
+        const reader = new FileReader();
+        
+        if (file.type == 'application/vnd.ms-excel') {
+            reader.onload = function() {
+                window.csv_cords = reader.result;
+                var allTextLines = csv_cords.split(/\r\n|\n/);
+                
+                for (var i=0; i<allTextLines.length; i++) {
+                    var data = allTextLines[i].split(',');
+                    if (allTextLines[i] == '') continue;
+                        var tarr = [];
+                        for (var j=0; j<data.length; j++) {
+                            tarr.push(data[j]);
+                        }
+                        window.coordinates.push(tarr);
+                }
+                //===
+            };
+        }
         if (file.type === 'image/svg+xml') {
-            const reader = new FileReader();
             reader.onload = function() {
                 renderSVGInHTML(pathologize(reader.result));
             };
-            reader.readAsText(file);
-          }
+        }
+
+        reader.readAsText(file);
     }
 
     var renderSVGInHTML = function (pathsOnly) {
@@ -32,7 +52,6 @@ export default function startApp () {
         document.getElementById('svg-holder').innerHTML = pathsOnly
         var paths = document.getElementById('svg-holder').getElementsByTagName('path');
         window.coordinates=pathsToCoords(paths, data.scale, data.numPoints, data.translateX, data.translateY)
-
     }
 
     var handleRenderCanvasButtonCLicked = function() {
@@ -57,19 +76,24 @@ export default function startApp () {
             
             toastr["error"]("Please select type of rendering, from top left drop down.", "Ultrahaptics")
         } else {
+            let coordinates_csv = false;
+            if (document.querySelector('#file_upload').files[0] && 
+            document.querySelector('#file_upload').files[0].type == 'application/vnd.ms-excel')  {
+                coordinates_csv = true;
+            }
             axios({
                 method: 'post',
                 url: '/render',
                 data: {
                   coordinates: coordinates,
+                  coordinates_csv: coordinates_csv
                 }
               }).then(function (response) {
-                  console.log(response)
+                  console.log(response);
                   if (response.data == 'Success') {
                     let render_type = $('#render-type option:selected').val()
                     window.ocs_websocket ? window.ocs_websocket.send_message({'type': render_type}) :null;
                   }
-                  
               });
         }
     }
