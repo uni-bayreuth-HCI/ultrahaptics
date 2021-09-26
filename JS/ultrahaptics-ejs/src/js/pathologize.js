@@ -10,6 +10,7 @@ export default function pathologize (original) {
   const removedStyle = removedText.replace(reStyle, '');
 
   try {
+    //transforms the svg to the coordinates for the canvas
     const pathologized = pathologist.transform(removedStyle);
     return pathologized;
   } catch (e)  {
