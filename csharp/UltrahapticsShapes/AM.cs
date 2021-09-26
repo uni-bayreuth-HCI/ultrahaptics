@@ -6,9 +6,14 @@ using System.IO;
 
 namespace UltrahapticsShapes
 {
+
+    /**
+     * Ultrahaptics Amplitude modulation class. 
+     * All amplitude modulation rendering takes place from this class
+     * */
     public class AM
     {
-        private static bool Stop = false;
+        private static bool Stop = false; //boolean to stop the emitter
         private static AmplitudeModulationEmitter emitter;
         private static  float intensity = 1.0f;
         private static float frequency = 200.0f;
