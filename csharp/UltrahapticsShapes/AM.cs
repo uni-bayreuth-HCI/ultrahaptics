@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Ultrahaptics;
 using Microsoft.VisualBasic.FileIO;
 using System.IO;
+using System.Threading;
 
 namespace UltrahapticsShapes
 {
@@ -51,10 +52,11 @@ namespace UltrahapticsShapes
                                 y = double.Parse(field);
                             }
                         }
-                        Vector3 position = new Vector3((float)(x * Ultrahaptics.Units.metres), (float)(y * Ultrahaptics.Units.metres), (float)(0.15 * Ultrahaptics.Units.metres));
+                        Vector3 position = new Vector3((float)(x * Ultrahaptics.Units.metres), (float)(y * Ultrahaptics.Units.metres), (float)(0.20 * Ultrahaptics.Units.metres));
                         AmplitudeModulationControlPoint point = new AmplitudeModulationControlPoint(position, intensity, frequency);
                         var points = new List<AmplitudeModulationControlPoint> { point };
                         emitter.update(points);
+                        //Thread.Sleep(1);
                         //this condition will stop emitter from processing further
                         if (Stop)
                         {
@@ -83,7 +85,7 @@ namespace UltrahapticsShapes
 
         public static void updateLiveRenderPoint(float updated_x, float updated_y) {
             if (emitter != null) {
-                Vector3 position = new Vector3((float)(updated_x * Ultrahaptics.Units.metres), (float)(updated_y * Ultrahaptics.Units.metres), (float)(0.15 * Ultrahaptics.Units.metres));
+                Vector3 position = new Vector3((float)(updated_x * Ultrahaptics.Units.metres), (float)(updated_y * Ultrahaptics.Units.metres), (float)(0.20 * Ultrahaptics.Units.metres));
                 AmplitudeModulationControlPoint point = new AmplitudeModulationControlPoint(position, intensity, frequency);
                 var points = new List<AmplitudeModulationControlPoint> { point };
                 emitter.update(points);

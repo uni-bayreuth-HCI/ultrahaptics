@@ -37,6 +37,7 @@ export default function startApp () {
      * this function do not process the coordinates from csv
      **/
     var handleFileUpload = function (e) {
+        debugger;
         window.coordinates = [];
         let file = this.files[0];
         const reader = new FileReader();
@@ -93,6 +94,7 @@ export default function startApp () {
      * @param {*} coordinates array of arrays i.e x,y coordinates
      */
     var handleRenderButtonCLicked = function(coordinates) {
+        debugger;
         let render_type = $('#render-type option:selected').val()
         if (render_type == 'select') {
             
@@ -169,6 +171,23 @@ export default function startApp () {
             leap_canvas(); }, 2000);
         }
     }
+    var handleRenderCanvasButtonCLicked = function() {
+        handleRenderButtonCLicked(window.canvas_coordinates)
+    }
+
+    var handleRenderLeapCanvasButtonCLicked = function() {
+        handleRenderButtonCLicked(window.leap_canvas_coordinates)
+    }
+
+    var handleRenderSVGButtonCLicked = function() {
+        debugger;
+        handleRenderButtonCLicked(window.coordinates)
+    }
+
+    //Stops the ultrahaptics device by communicating over websocket
+    var handleStopClicked = function() {
+        window.ocs_websocket ? window.ocs_websocket.send_message({"type":"stop"}) : null;
+    }
 
     canvas_script();    
     
@@ -181,22 +200,7 @@ export default function startApp () {
         item.addEventListener("click", handleTabChanged);
     })
 
-    var handleRenderCanvasButtonCLicked = function() {
-        handleRenderButtonCLicked(window.canvas_coordinates)
-    }
-
-    var handleRenderLeapCanvasButtonCLicked = function() {
-        handleRenderButtonCLicked(window.leap_canvas_coordinates)
-    }
-
-    var handleRenderSVGButtonCLicked = function() {
-        handleRenderButtonCLicked(window.coordinates)
-    }
-
-    //Stops the ultrahaptics device by communicating over websocket
-    var handleStopClicked = function() {
-        window.ocs_websocket ? window.ocs_websocket.send_message({"type":"stop"}) : null;
-    }
+    
 
     /**
      * Settings for thetoastr library which is
