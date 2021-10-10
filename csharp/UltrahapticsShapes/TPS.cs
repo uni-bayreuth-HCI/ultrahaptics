@@ -4,6 +4,10 @@ using Ultrahaptics;
 
 namespace UltrahapticsShapes
 {
+    /**
+     * Ultrahaptics Amplitude modulation class. 
+     * All amplitude modulation rendering takes place from this class
+     * */
     class TPS
     {
         private static TimePointStreamingEmitter _emitter;

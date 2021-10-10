@@ -56,7 +56,7 @@ namespace UltrahapticsShapes
                         AmplitudeModulationControlPoint point = new AmplitudeModulationControlPoint(position, intensity, frequency);
                         var points = new List<AmplitudeModulationControlPoint> { point };
                         emitter.update(points);
-                        //Thread.Sleep(1);
+                        
                         //this condition will stop emitter from processing further
                         if (Stop)
                         {
@@ -72,7 +72,10 @@ namespace UltrahapticsShapes
             }
         
         }
-
+        /// <summary>
+        /// Starts the live ultrahaptics rendering
+        /// Note: live ultrahaptics rendering of a point always happrns in AM and is never implemented in TPS
+        /// </summary>
         public static void RenderLive()
         {
             Stop = false;
@@ -83,6 +86,11 @@ namespace UltrahapticsShapes
             emitter.update(points);
         }
 
+        /// <summary>
+        /// this function is to update the live rendering points which comes from ultraleap live rendering feature
+        /// </summary>
+        /// <param name="updated_x"> the new x coordinate</param>
+        /// <param name="updated_y"> the new y coordinate</param>
         public static void updateLiveRenderPoint(float updated_x, float updated_y) {
             if (emitter != null) {
                 Vector3 position = new Vector3((float)(updated_x * Ultrahaptics.Units.metres), (float)(updated_y * Ultrahaptics.Units.metres), (float)(0.20 * Ultrahaptics.Units.metres));
