@@ -16,7 +16,9 @@ In this project, our main focus is to render custom shapes on user's palm using 
 
 ## Start the Application
 
-To start the application assuming all requirements are met. Execute the file: 
+To start the application assuming all requirements are met. Open 
+```csharp/UltrahapticsShapes.sln``` in visual studio and build the solution to generate the necessary executable.
+After that, execute the file: 
 ```$start_application.bat```
 
 This execution of bat file might take long time to run for the first time. Since, a bundle of node modules are required and the script installs it.
